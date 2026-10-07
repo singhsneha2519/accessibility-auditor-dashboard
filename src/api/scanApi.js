@@ -16,3 +16,14 @@ export async function getAllScans() {
   const data = await response.json();
   return { ok: response.ok, data };
 }
+
+const AI_BASE_URL = 'https://violations.onrender.com'; // paste her real URL, no trailing slash
+
+export async function explainViolations(siteUrl) {
+  const response = await fetch(
+    `${AI_BASE_URL}/summarize-url?url=${encodeURIComponent(siteUrl)}`,
+    { cache: 'no-store' }
+  );
+  const text = await response.text();
+  return { ok: response.ok, text };
+}

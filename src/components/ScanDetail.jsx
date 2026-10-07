@@ -19,6 +19,12 @@ function ScanDetail({ scan, onBack }) {
                 <code>{violation.id}</code>
               </div>
               <p>{violation.description}</p>
+              {violation.plain_explanation && (
+              <p className="explanation">{violation.plain_explanation}</p>
+                  )}
+                      {violation.suggested_fix && (
+                   <p className="suggested-fix">Suggested fix: {violation.suggested_fix}</p>
+                    )}
               {/*  AI  plain-language explanation will render */}
               {violation.plain_explanation && (
                 <p className="explanation">{violation.plain_explanation}</p>
