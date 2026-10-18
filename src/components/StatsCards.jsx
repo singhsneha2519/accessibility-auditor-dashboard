@@ -1,26 +1,30 @@
+import { Globe, TriangleAlert, Info, ShieldOff } from 'lucide-react';
+
 function StatsCards({ scans }) {
-  const totalScans = scans.length;
-  const totalViolations = scans.reduce(
-    (sum, scan) => sum + (scan.violations ? scan.violations.length : 0),
-    0
-  );
-  const avgPerSite = totalScans > 0 ? (totalViolations / totalScans).toFixed(1) : 0;
+  const scanned = scans.filter((s) => s.status !== 'blocked');
+  const blocked = scans.length - scanned.length;
+  const totalViolations = scanned.reduce((sum, s) => sum + (s.violations?.length || 0), 0);
+  const average = scanned.length ? (totalViolations / scanned.length).toFixed(1) : '0';
+
+  const cards = [
+    { label: 'Sites scanned', value: scans.length, icon: Globe, tone: 'primary' },
+    { label: 'Violations found', value: totalViolations, icon: TriangleAlert, tone: 'critical' },
+    { label: 'Average per site', value: average, icon: Info, tone: 'moderate' },
+    { label: 'Blocked sites', value: blocked, icon: ShieldOff, tone: 'muted' },
+  ];
 
   return (
-    <div className="stats-cards">
-      <div className="stat-card">
-        <p className="stat-label">Sites scanned</p>
-        <p className="stat-value">{totalScans}</p>
-      </div>
-      <div className="stat-card">
-        <p className="stat-label">Violations found</p>
-        <p className="stat-value">{totalViolations}</p>
-      </div>
-      <div className="stat-card">
-        <p className="stat-label">Avg per site</p>
-        <p className="stat-value">{avgPerSite}</p>
-      </div>
-    </div>
+    <ul className="stats">
+      {cards.map(({ label, value, icon: Icon, tone }) => (
+        <li key={label} className="stat card">
+          <span className={`stat-icon tone-${tone}`} aria-hidden="true">
+            <Icon size={20} />
+          </span>
+          <span className="stat-value">{value}</span>
+          <span className="stat-label">{label}</span>
+        </li>
+      ))}
+    </ul>
   );
 }
 

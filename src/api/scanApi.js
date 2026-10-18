@@ -27,3 +27,11 @@ export async function explainViolations(siteUrl) {
   const text = await response.text();
   return { ok: response.ok, text };
 }
+
+const DS_BASE_URL = 'https://accessibility-auditor-ds.onrender.com';
+
+export async function getInsights() {
+  const response = await fetch(`${DS_BASE_URL}/insights`, { cache: 'no-store' });
+  const data = await response.json();
+  return { ok: response.ok, data };
+}
